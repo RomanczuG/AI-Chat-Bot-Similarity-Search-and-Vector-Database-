@@ -9,6 +9,9 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.callbacks import get_openai_callback
 # from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 from dotenv import load_dotenv
+import os
+
+
 load_dotenv()
 
 openai_api_key = os.getenv("openai")
