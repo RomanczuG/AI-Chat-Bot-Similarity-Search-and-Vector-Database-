@@ -8,9 +8,10 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.callbacks import get_openai_callback
 # from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+from dotenv import load_dotenv
+load_dotenv()
 
-
-openai_api_key = "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"
+openai_api_key = os.getenv("openai")
 openai.api_key = openai_api_key
 DATA = [
     {
@@ -125,7 +126,7 @@ def get_embeddings(texts):
 # Define a function to get the most similar events to a given query
 def getResponse(question):
     # Define the number of similar events to retrieve
-    k = 4
+    k = 10
     
     # Load the data
     data = pd.DataFrame(DATA)
@@ -158,7 +159,8 @@ def getResponse(question):
 
 
     content = "Question: " + question
-    content = content + "\n" + "Here are the top 4 most similar events:"
+    # content = ""
+    content = content + "\n" + "Here are the top most similar events:"
     content = content + "\n" + data.iloc[I[0]].to_string()
     # print(content)
 
@@ -166,7 +168,7 @@ def getResponse(question):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages= [
-            {"role": "system", "content": "You are a helpful assistant that recomends events based on question and provided content."},
+            {"role": "system", "content": "You are a helpful assistant that filters events based on the question and summarizes them"},
             {"role": "user", "content": content}
         ]
     )
